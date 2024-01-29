@@ -1,3 +1,5 @@
+package com.holidays.api;
+
 public class Holiday {
     private String name;
     private String date;

@@ -1,32 +1,45 @@
+package com.holidays.api;
+
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Exercise6 {
-    public static void main(String[] args) {
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@RestController
+@RequestMapping("/holidays")
+public class HolidayController {
+
+    List<Holiday> holidays = new ArrayList<>();
+
+    // Construtor: assim que cria o controller, preênche a lista de feriados
+    HolidayController() {
+        System.out.println("deu certo");
         fillHolidaysList();
-        getHolidays();
-        isDateHoliday("25-12-2024");
     }
 
-    static List<Holiday> holidays = new ArrayList<>();
+    // GET que retornar a lista completa
+    @GetMapping
+    public List<Holiday> getHolidays() {
+        return holidays;
+    }
 
-    public static void getHolidays(){
-        for(Holiday h : holidays){
-            System.out.println(h.getDate() + ": " + h.getName());
-        }
-    } 
-
-    public static void isDateHoliday(String date) {
+    // Get pela data
+    @GetMapping("/{date}")
+    public String getHolidayByDate(@PathVariable String date) {
         for (Holiday h : holidays) {
-            if (h.getDate() == date) {
-                System.out.println("Dia " + h.getDate() + " é " + h.getName() + "! 🎉");
-                return;
+            if (h.getDate().equals(date)) {
+                return "Dia " + h.getDate() + " é " + h.getName() + "! 🎉";
             }
         }
-        System.out.println("Dia " + date + " não é feriado 🥲");
+        return "Dia " + date + " não é feriado 🥲";
     }
 
-    public static void fillHolidaysList() {
+    public void fillHolidaysList() {
         holidays.clear();
         holidays.add(new Holiday("Confraternização Mundial", "01-01-2024"));
         holidays.add(new Holiday("Carnaval", "12-02-2024"));
